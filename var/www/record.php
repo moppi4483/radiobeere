@@ -24,13 +24,13 @@
     if ($reset == "1")
         {
         $abfrage = "SELECT id FROM timer ORDER BY id DESC LIMIT 1";
-        $ergebnis = mysql_query($abfrage);
-        while($row = mysql_fetch_object($ergebnis))
+        $ergebnis = mysqli_query($verbindung, $abfrage);
+        while($row = mysqli_fetch_object($ergebnis))
              {
             $id =("$row->id");
              }
         $loeschen = "DELETE FROM timer WHERE id = '$id'";
-        $loesch = mysql_query($loeschen);
+        $loesch = mysqli_query($verbindung, $loeschen);
         $reset = "0";
         }
     exec("sudo /home/pi/radiobeere/rb-timer-update.py");
@@ -68,8 +68,8 @@
 
                         <?php
                         $abfrage = "SELECT name,alias FROM sender ORDER BY name";
-                        $ergebnis = mysql_query($abfrage);
-                        while($row = mysql_fetch_object($ergebnis))
+                        $ergebnis = mysqli_query($verbindung, $abfrage);
+                        while($row = mysqli_fetch_object($ergebnis))
                             {
                             echo "<option value=\"$row->alias\">$row->name</option>";
                             }
