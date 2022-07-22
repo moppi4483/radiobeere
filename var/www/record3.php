@@ -187,7 +187,7 @@
                       id="slider-dauer"
                       value="0"
                       min="0"
-                      max="120"
+                      max="300"
                       step="5" /><br />
                 <br />
                 <button type="submit"
