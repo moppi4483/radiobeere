@@ -42,7 +42,7 @@
                 foreach ($_POST['del'] as $eintrag)
                     {
                     $loeschen = "DELETE FROM timer WHERE id = $eintrag";
-                    $loesch = mysql_query($loeschen);
+                    $loesch = mysqli_query($verbindung, $loeschen);
                     }
                 exec("sudo /home/pi/radiobeere/rb-timer-update.py");
                 unset($del);
@@ -53,10 +53,10 @@
 
                 <?php
                 $abfrage = "SELECT * FROM timer ORDER BY zeitstempel";
-                $ergebnis = mysql_query($abfrage);
+                $ergebnis = mysqli_query($verbindung, $abfrage);
                 $abfrage2 = "SELECT COUNT(id) FROM timer";
-                $ergebnis2 = mysql_query($abfrage2);
-                $anzahl_timer = mysql_fetch_row($ergebnis2);
+                $ergebnis2 = mysqli_query($verbindung, $abfrage2);
+                $anzahl_timer = mysqli_fetch_row($ergebnis2);
                 $anzahl_timer = $anzahl_timer[0];
 
                 if ($anzahl_timer == 0)
@@ -64,7 +64,7 @@
                     echo "<h3>Keine Timer vorhanden.</h3><br>";
                     }
 
-                while($row = mysql_fetch_object($ergebnis))
+                while($row = mysqli_fetch_object($ergebnis))
                     {
                     echo "<label><input name=\"del[]\" type=\"checkbox\" value=\"$row->id\" id=\"$row->id\">";
                     $dauer = $row->dauer/60;
