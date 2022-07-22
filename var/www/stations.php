@@ -67,7 +67,7 @@
 
             if ($name !="")
                 {
-                $alias = strtolower(eregi_replace(" ", "", $name));
+                $alias = strtolower(preg_replace("/\s+/", "", $name));
                 $alias = preg_replace("/[^0-9a-zA-Z \-\_]/", "", $alias);
                 $abfrage = "SELECT * FROM sender WHERE alias = '$alias' OR url = '$url'";
                 $ergebnis = mysqli_query($verbindung, $abfrage);
