@@ -57,9 +57,9 @@
 
                         <?php
                         $abfrage = "SELECT name FROM sender ORDER BY name";
-                        $ergebnis = mysql_query($abfrage);
+                        $ergebnis = mysqli_query($verbindung, $abfrage);
 
-                        while($row = mysql_fetch_object($ergebnis))
+                        while($row = mysqli_fetch_object($ergebnis))
                             {
                             if ($row->name == $filter_sender)
                                 {
@@ -85,14 +85,14 @@
                     {
                     $loeschen = "DELETE FROM aufnahmen WHERE id = $eintrag";
                     $abfrage = "SELECT sender FROM aufnahmen WHERE id = $eintrag";
-                    $ergebnis = mysql_query($abfrage);
-                    while($row = mysql_fetch_object($ergebnis))
+                    $ergebnis = mysqli_query($verbindung, $abfrage);
+                    while($row = mysqli_fetch_object($ergebnis))
                         {
                         $sender = $row->sender;
                         }
                     $alias = strtolower(eregi_replace(" ", "", $sender));
                     $alias = preg_replace("/[^0-9a-zA-Z \-\_]/", "", $alias);
-                    $loesch = mysql_query($loeschen);
+                    $loesch = mysqli_query($verbindung, $loeschen);
                     exec("sudo /home/pi/radiobeere/podcast.py $alias");
                     exec("sudo /home/pi/radiobeere/rb-rec-cleanup.py");
                     }
@@ -113,13 +113,13 @@
             $start = $seite * $eintraege_pro_seite - $eintraege_pro_seite;
             if($filter_sender == "alle")
                 {
-                $abfrage = mysql_query("SELECT id FROM aufnahmen");
+                $abfrage = mysqli_query($verbindung, "SELECT id FROM aufnahmen");
                 }
             else
                 {
-                $abfrage = mysql_query("SELECT id FROM aufnahmen WHERE sender = '$filter_sender'");
+                $abfrage = mysqli_query($verbindung, "SELECT id FROM aufnahmen WHERE sender = '$filter_sender'");
                 }
-            $menge = mysql_num_rows($abfrage);
+            $menge = mysqli_num_rows($abfrage);
             $wieviel_seiten = $menge / $eintraege_pro_seite;
             ?>
 
@@ -151,9 +151,9 @@
                     {
                     $abfrage = "SELECT * FROM aufnahmen WHERE sender = '$filter_sender' ORDER BY zeitstempel DESC LIMIT $start, $eintraege_pro_seite";
                     }
-                $ergebnis = mysql_query($abfrage);
+                $ergebnis = mysqli_query($verbindung, $abfrage);
 
-                while($row = mysql_fetch_object($ergebnis))
+                while($row = mysqli_fetch_object($ergebnis))
                     {
                     $tag = (substr($row->datum,8,2));
                     $monat = (substr($row->datum,5,2));
