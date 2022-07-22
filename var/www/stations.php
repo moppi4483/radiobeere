@@ -43,14 +43,14 @@
                 foreach ($_POST['del'] as $eintrag)
                     {
                     $abfrage_sender = "SELECT * FROM sender WHERE id = $eintrag";
-                    $ergebnis = mysql_query($abfrage_sender);
-                    while($row = mysql_fetch_object($ergebnis))
+                    $ergebnis = mysqli_query($verbindung, $abfrage_sender);
+                    while($row = mysqli_fetch_object($ergebnis))
                         {
                         $loeschen_timer = "DELETE FROM timer WHERE alias = '$row->alias'";
-                        $loesch_timer = mysql_query($loeschen_timer);
+                        $loesch_timer = mysqli_query($verbindung, $loeschen_timer);
                         }
                     $loeschen = "DELETE FROM sender WHERE id = $eintrag";
-                    $loesch = mysql_query($loeschen);
+                    $loesch = mysqli_query($verbindung, $loeschen);
                     }
                 unset($del);
                 exec("sudo /home/pi/radiobeere/rb-timer-update.py");
@@ -70,8 +70,8 @@
                 $alias = strtolower(eregi_replace(" ", "", $name));
                 $alias = preg_replace("/[^0-9a-zA-Z \-\_]/", "", $alias);
                 $abfrage = "SELECT * FROM sender WHERE alias = '$alias' OR url = '$url'";
-                $ergebnis = mysql_query($abfrage);
-                $row = mysql_fetch_row($ergebnis);
+                $ergebnis = mysqli_query($verbindung, $abfrage);
+                $row = mysqli_fetch_row($ergebnis);
                 if ($row != "")
                     {
                     echo "<b><font color=\"#f00\">Sender bereits in der Datenbank!</font></b><br><br>";
@@ -92,7 +92,7 @@
                                 {
                                 move_uploaded_file($_FILES['cover']['tmp_name'], "img/podcast/".$alias.".jpg");
                                 $eintrag = "INSERT INTO sender (alias, name, url) VALUES ('$alias', '$name', '$url')";
-                                $eintragen = mysql_query($eintrag);
+                                $eintragen = mysqli_query($verbindung, $eintrag);
                                 exec("sudo /home/pi/radiobeere/podcast.py $alias");
                                 echo "<b><font color=\"#f00\">Sender gespeichert!</font></b><br><br>";
                                 }
@@ -112,7 +112,7 @@
                     else
                         {
                         $eintrag = "INSERT INTO sender (alias, name, url) VALUES ('$alias', '$name', '$url')";
-                        $eintragen = mysql_query($eintrag);
+                        $eintragen = mysqli_query($verbindung, $eintrag);
                         exec("sudo /home/pi/radiobeere/podcast.py $alias");
                         echo "<b><font color=\"#f00\">Sender gespeichert!</font></b><br><br>";
                         }
@@ -164,17 +164,17 @@
 
                 <?php
                 $abfrage = "SELECT * FROM sender ORDER BY name";
-                $ergebnis = mysql_query($abfrage);
+                $ergebnis = mysqli_query($verbindung, $abfrage);
                 $abfrage2 = "SELECT COUNT(id) FROM sender";
-                $ergebnis2 = mysql_query($abfrage2);
-                $anzahl_sender = mysql_fetch_row($ergebnis2);
+                $ergebnis2 = mysqli_query($verbindung, $abfrage2);
+                $anzahl_sender = mysqli_fetch_row($ergebnis2);
                 $anzahl_sender = $anzahl_sender[0];
 
                 if ($anzahl_sender == 0)
                     {
                     echo "<h3>Keine Sender vorhanden.</h3><br>";
                     }
-                while($row = mysql_fetch_object($ergebnis))
+                while($row = mysqli_fetch_object($ergebnis))
                     {
                     echo "<label><input name=\"del[]\" type=\"checkbox\" value=\"$row->id\" id=\"$row->id\">";
                     echo "$row->name</label>";
