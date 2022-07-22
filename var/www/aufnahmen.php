@@ -90,7 +90,7 @@
                         {
                         $sender = $row->sender;
                         }
-                    $alias = strtolower(eregi_replace(" ", "", $sender));
+                    $alias = strtolower(preg_replace("/\s+/", "", $sender));
                     $alias = preg_replace("/[^0-9a-zA-Z \-\_]/", "", $alias);
                     $loesch = mysqli_query($verbindung, $loeschen);
                     exec("sudo /home/pi/radiobeere/podcast.py $alias");
