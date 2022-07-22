@@ -15,14 +15,14 @@ MUTE_ERRORS = '> /dev/null 2>&1'
 
 def delete_outdated_from_db(connection, cursor):
 
-    cursor.execute('SELECT * FROM timer')
+    cursor.execute('SELECT * FROM timer;')
     result = cursor.fetchall()
     for db_record in result:
         db_record_id = db_record[0]
         timestamp = db_record[9]
         now = time.time()
         if timestamp != 0 and now > timestamp:
-            delete_db_entry = 'DELETE FROM timer WHERE id = %s'
+            delete_db_entry = 'DELETE FROM timer WHERE id = %s;'
             cursor.execute(delete_db_entry, (db_record_id,))
         connection.commit()
 
@@ -42,43 +42,43 @@ def wipe_cron():
 
 def create_cron_entry(cursor, db_record):
 
-    cursor.execute('SELECT url FROM sender WHERE alias=%s', (db_record[2]),)
-    url = cursor.fetchone()[0]
+    #cursor.execute('SELECT url FROM sender WHERE alias=%s', (db_record[2]),)
+    url = db_record[0]
 
     cron_entry = [
-                db_record[4],
-                db_record[3],
-                db_record[7],
-                db_record[8],
                 db_record[5],
+                db_record[4],
+                db_record[8],
+                db_record[9],
+                db_record[6],
                 'root /usr/bin/streamripper',
                 url,
                 '-d',
                 PATH_RECORDINGS,
                 '-a aufnahme_aktiv_'
-                        + db_record[2]
+                        + db_record[3]
                         + '_\\%d -A -l',
-                db_record[6],
+                db_record[7],
                 MUTE_ERRORS,
                 '; rm',
                 PATH_RECORDINGS
                         + '/*.cue ;',
                 'rename \'s/aufnahme_aktiv_'
-                        + db_record[2]
+                        + db_record[3]
                         + '/aufnahme_fertig_'
-                        + db_record[2]
+                        + db_record[3]
                         + '/\'',
                 PATH_RECORDINGS
                         + '/*.mp3 ;',
                 'chmod 777',
                 PATH_RECORDINGS
                         + '/aufnahme_fertig_'
-                        + db_record[2]
+                        + db_record[3]
                         + '* ;',
                 '/home/pi/radiobeere/rb-rec-add.py',
                 MUTE_ERRORS,
                 '; /home/pi/radiobeere/podcast.py',
-                db_record[2],
+                db_record[3],
                 MUTE_ERRORS
                 ]
 
@@ -99,7 +99,7 @@ def main():
 
         with closing(connection.cursor()) as cursor:
             delete_outdated_from_db(connection, cursor)
-            cursor.execute('SELECT * FROM timer')
+            cursor.execute('SELECT a.url, b.* FROM sender a, (select * from timer) b where a.alias = b.alias;')
             result = cursor.fetchall()
 
             for db_record in result:
