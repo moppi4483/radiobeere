@@ -42,20 +42,15 @@
 
         <?php
         $sekunden = $dauer * 60;
-        $abfrage = "SELECT name FROM sender WHERE alias = '$alias'";
+        $abfrage = "SELECT name, url FROM sender WHERE alias = '$alias';";
         $ergebnis = mysqli_query($verbindung, $abfrage);
         while($row = mysqli_fetch_object($ergebnis))
             {
             $sender = "$row->name";
-            }
-        $abfrage = "SELECT url FROM sender WHERE alias = '$alias'";
-        $ergebnis = mysqli_query($verbindung, $abfrage);
-        while($row = mysqli_fetch_object($ergebnis))
-            {
             $url = "$row->url";
             }
 
-        if ($datum !="")
+        if ($datum != "")
             {
             $wochentage ="*";
             $tag = (substr($datum,0,2));
@@ -89,7 +84,7 @@
         ?>
 
         <?php
-        $eintrag = "INSERT INTO timer (sender, alias, stunde, minute, wochentage, dauer, tag, monat,zeitstempel) VALUES ('$sender', '$alias', '$stunde', '$minute', '$wochentage', '$sekunden', '$tag', '$monat', '$zeitstempel')";
+        $eintrag = "INSERT INTO timer (sender, alias, stunde, minute, wochentage, dauer, tag, monat, zeitstempel) VALUES ('$sender', '$alias', '$stunde', '$minute', '$wochentage', '$sekunden', '$tag', '$monat', '$zeitstempel');";
         $eintragen = mysqli_query($verbindung, $eintrag);
         exec("sudo /home/pi/radiobeere/rb-timer-update.py");
         ?>
