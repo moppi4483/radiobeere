@@ -23,13 +23,13 @@
     $reset = $_POST["reset"];
     if ($reset == "1")
         {
-        $abfrage = "SELECT id FROM timer ORDER BY id DESC LIMIT 1";
+        $abfrage = "SELECT id FROM timer ORDER BY id DESC LIMIT 1;";
         $ergebnis = mysqli_query($verbindung, $abfrage);
         while($row = mysqli_fetch_object($ergebnis))
              {
             $id =("$row->id");
              }
-        $loeschen = "DELETE FROM timer WHERE id = '$id'";
+        $loeschen = "DELETE FROM timer WHERE id = '$id';";
         $loesch = mysqli_query($verbindung, $loeschen);
         $reset = "0";
         }
@@ -67,7 +67,7 @@
                         </option>
 
                         <?php
-                        $abfrage = "SELECT name,alias FROM sender ORDER BY name";
+                        $abfrage = "SELECT name, alias FROM sender ORDER BY name;";
                         $ergebnis = mysqli_query($verbindung, $abfrage);
                         while($row = mysqli_fetch_object($ergebnis))
                             {
