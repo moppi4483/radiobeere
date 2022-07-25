@@ -177,7 +177,7 @@ def main():
 
         with closing(connection.cursor()) as cursor:
             cursor.execute(
-                    'SELECT * FROM aufnahmen WHERE sender=%s', station,)
+                    'SELECT * FROM aufnahmen WHERE sender=%s', (station,))
             result = cursor.fetchall()
             for db_record in result:
 

@@ -77,7 +77,7 @@ def id3_tag(path, station, station_alias, recording_time):
             mime = 'image/jpeg',
             type = 3,
             desc = u'Cover',
-            data = open(podcast_img).read()
+            data = open(podcast_img, 'rb').read()
             )
     )
 
