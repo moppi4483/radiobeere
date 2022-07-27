@@ -16,12 +16,21 @@ su -c "./setup.py install"
 cd /home/pi
 rm mutagen*.gz
 
-# Generate random password for MySQL user radiobeere
 
-password=$(< /dev/urandom tr -dc _A-Z-a-z-0-9 | head -c${1:-32})
+password = ""
+printf "Soll ein automatisiertes Passwort für den Datenbank-Nutzer radiobeere erzeugt werden? (j/n)"
+read antwort
+
+if [$antwort == "j"]
+then
+  # Generate random password for MySQL user radiobeere
+  password=$(< /dev/urandom tr -dc _A-Z-a-z-0-9 | head -c${1:-32})
+else
+  printf "Gib ein Password für den Datenbank-Nutzer radiobeere ein: "
+  read password
+fi
 
 cd /home/pi/radiobeere/setup
-
 sed 's/password/'$password'/g' radiobeere.sql > temp_file
 mv temp_file radiobeere.sql
 
@@ -33,9 +42,14 @@ sed 's/password/'$password'/g' ../var/www/include/db-connect.php > temp_file
 mv temp_file ../var/www/include/db-connect.php
 chmod 644 ../var/www/include/db-connect.php
 
-# Create MySQL user radiobeere, the database radiobeere and populate it with tables
 
-cat radiobeere.sql | mysql -u root -p
+printf "Soll die Datenbank-Ersteinrichtung erfolgen? (j/n)"
+read antwort
+
+if [$antwort == "j"]
+then
+  cat radiobeere.sql | mysql -u root -p
+fi
 
 # Create system and Samba user radiobeere
 
