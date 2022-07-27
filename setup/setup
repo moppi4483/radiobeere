@@ -17,6 +17,24 @@ cd /home/pi
 rm mutagen*.gz
 
 
+printf "Gib einen FQDN (oder IP-Adresse) an über den das Gerät erreichbar ist! Wenn keine Eingabe erfolgt wird der Hostname des Systems verwendet."
+read fqdn
+
+if[$fqdn != ""]
+then
+  cd /home/pi/radiobeere/var/www
+  sed 's/gethostname()/"'$fqdn'"/g' podcast.php > temp_file
+  mv temp_file podcast.php
+  chmod 644 podcast.php
+  
+  cd /home/pi/radiobeere
+  sed 's/socket.gethostname()/"'$fqdn'"/g' podcast.py > temp_file
+  mv temp_file podcast.py
+  chmod 755 podcast.py
+fi
+
+
+
 password = ""
 printf "Soll ein automatisiertes Passwort für den Datenbank-Nutzer radiobeere erzeugt werden? (j/n)"
 read antwort
