@@ -97,7 +97,7 @@
                     exec("sudo /home/pi/radiobeere/rb-rec-cleanup.py");
                     }
                 unset($del);
-                echo "<script type=\"text/javascript\">window.location.reload(true);</script>";
+                //echo "<script type=\"text/javascript\">window.location.reload(true);</script>";
                 }
             ?>
 
