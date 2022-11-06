@@ -73,7 +73,7 @@
             "hp-wrapper ui-btn ui-input-btn ui-shadow ui-btn-inline">
                 <div class="hp-button maintenance">
                 </div>
-                Wartung
+                Einstellungen + Wartung
             </div></a> <a href="reboot.php">
             <div class=
             "hp-wrapper ui-btn ui-input-btn ui-shadow ui-btn-inline">
