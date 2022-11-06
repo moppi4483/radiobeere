@@ -44,12 +44,13 @@
 
             <p>
             <?php
-            $hostname = gethostname();
+            $prot = getProtokoll($verbindung);
+            $hostname = getFQDN($verbindung);
             $abfrage = "SELECT * FROM sender ORDER BY name";
             $ergebnis = mysqli_query($verbindung, $abfrage);
             while($row = mysqli_fetch_object($ergebnis))
                  {
-                $feed = "http://$hostname/podcast/$row->alias.xml";
+                $feed = "$prot://$hostname/podcast/$row->alias.xml";
                 echo "<b>$row->name:</b><br><a href=\"$feed\" target=\"_blank\">$feed</a><br><br>";
                 }
             ?>
