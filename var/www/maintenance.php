@@ -31,21 +31,29 @@
              class="ui-content">
             
             <h2>Einstellungen<h2>
-            <p>
                 <form method="post" id="verwalten_einstellungen" enctype="multipart/form-data">
                     <?php
                         include("include/db-connect.php");
+                    
+                        $fqdn = $_POST["FQDN"];
+                        $prot = $_POST["Protokoll"];
+                        
+                        if ($fqdn != "") {
+                            setSettings($verbindung, $fqdn, $prot);
+                        }
+
                         $abfrage = "SELECT * FROM settings;";
                         $ergebnis = mysqli_query($verbindung, $abfrage);
                         while($row = mysqli_fetch_object($ergebnis)) {
-                            echo "<label for=\"name\">" . $row->name . ": <input type=\"text\"
-                                    name=\"" . $row->name . "\"
-                                    id=\"" . $row->name . "\"
-                                    value=\"" . $row->wert . "\"/>";
+                            echo "  <label for=\"" . $row->name . "\">" . $row->name . ":
+                                    <input type=\"text\" name=\"" . $row->name . "\" id=\"" . $row->name . "\" value=\"" . $row->wert . "\"/>
+                                    </label>\n";
                         }
                     ?>
+
+                    <input type="submit" value="Einstellungen speichern" form="verwalten_einstellungen" />
                 </form>
-            </p>
+
 
             
 
