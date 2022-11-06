@@ -10,11 +10,11 @@ mysqli_select_db($verbindung, "radiobeere");
 
 
 
-function getFQDN() {
+function getFQDN($verb) {
   $fqdn = "";
   
   $abfrage = "SELECT * FROM settings WHERE name = 'FQDN';";
-  $ergebnis = mysqli_query($verbindung, $abfrage);
+  $ergebnis = mysqli_query($verb, $abfrage);
   while($row = mysqli_fetch_object($ergebnis)) {
     $fqdn = $row->wert;
   }
@@ -22,11 +22,31 @@ function getFQDN() {
   return $fqdn;
 }
 
+function getProtokoll($verb) {
+  $prot = "";
+  $abfrage = "SELECT * FROM settings WHERE name = 'Protokoll';";
+  $ergebnis = mysqli_query($verb, $abfrage);
+  while($row = mysqli_fetch_object($ergebnis)) {
+    $prot = $row->wert;
+  }
+  
+  return $prot;
+}
 
 
-function setFQDN($fqdn) {
-  $abfrage = "INSERT INTO table (name, wert) VALUES('FQDN', '" . $fqdn . "') ON DUPLICATE KEY UPDATE wert='" . $fqdn . "';";
-  $ergebnis = mysqli_query($verbindung, $abfrage);
+
+function setSettings($verb, $fqdn, $prot) {
+        $abfrage = "INSERT INTO settings (name, wert) VALUES('FQDN', '" . $fqdn . "'), ('Protokoll', '" . $prot . "') ON DUPLICATE KEY UPDATE wert=VALUES(wert);";
+        try {
+                if(!mysqli_query($verb, $abfrage)) {
+                        throw new Exception(mysqli_error($verb));
+                } else {
+                        echo "<p>Einstellungen gespeichert</p>";
+                }
+        }
+        catch (Exception $e) {
+                echo $e -> getMessage();
+        }
   
   return $ergebnis;
 }
