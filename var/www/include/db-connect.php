@@ -11,28 +11,36 @@ mysqli_select_db($verbindung, "radiobeere");
 
 
 function getFQDN($verb) {
-  $fqdn = "";
-  
-  $abfrage = "SELECT * FROM settings WHERE name = 'FQDN';";
-  $ergebnis = mysqli_query($verb, $abfrage);
-  while($row = mysqli_fetch_object($ergebnis)) {
-    $fqdn = $row->wert;
-  }
-  
-  return $fqdn;
+        $fqdn = "";
+
+        $abfrage = "SELECT * FROM settings WHERE name = 'FQDN';";
+        $ergebnis = mysqli_query($verb, $abfrage);
+        while($row = mysqli_fetch_object($ergebnis)) {
+                $fqdn = $row->wert;
+        }
+
+        if($fqdn == '') {
+                $fqdn = gethostname();
+        }
+
+        return $fqdn;
 }
+
 
 function getProtokoll($verb) {
-  $prot = "";
-  $abfrage = "SELECT * FROM settings WHERE name = 'Protokoll';";
-  $ergebnis = mysqli_query($verb, $abfrage);
-  while($row = mysqli_fetch_object($ergebnis)) {
-    $prot = $row->wert;
-  }
-  
-  return $prot;
-}
+        $prot = "";
+        $abfrage = "SELECT * FROM settings WHERE name = 'Protokoll';";
+        $ergebnis = mysqli_query($verb, $abfrage);
+        while($row = mysqli_fetch_object($ergebnis)) {
+                $prot = $row->wert;
+        }
 
+        if($prot == '') {
+                $prot = 'http';
+        }
+
+        return $prot;
+}
 
 
 function setSettings($verb, $fqdn, $prot) {
