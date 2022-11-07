@@ -186,7 +186,7 @@ def main():
             login.DB_PASSWORD, login.DB_DATABASE)) as connection:
 
         station_alias = sys.argv[1]
-        hostname = get_base_url(connection)
+        hostname = get_baseurl(connection)
 
         station = get_station_name(connection, station_alias)
         last_build_date = formatdate(time.time(), True)
