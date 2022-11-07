@@ -179,58 +179,72 @@ def create_podcast_item(title, audio_file, length_bytes, guid,
     return podcast_item
 
 
+def build_podcastFile (connection, station_alias)
+    hostname = get_baseurl(connection)
+
+    station = get_station_name(connection, station_alias)
+    last_build_date = formatdate(time.time(), True)
+    podcast_img = get_podcast_img(station_alias, hostname)
+    xml_file = PODCAST_PATH + station_alias + '.xml'
+
+    feed = open(xml_file, 'w')
+    podcast_header = create_podcast_header(
+        station, last_build_date, podcast_img,hostname)
+    feed.write(podcast_header)
+    feed.close
+
+    feed = open(xml_file, 'a')
+
+    with closing(connection.cursor()) as cursor:
+        cursor.execute(
+            'SELECT * FROM aufnahmen WHERE sender=%s', (station,))
+        result = cursor.fetchall()
+        for db_record in result:
+
+            recording_time = datetime.datetime.fromtimestamp(db_record[5])
+
+            podcast_item = create_podcast_item(
+                '{0}, {1:%d.%m.%Y, %H:%M} Uhr'.format(
+                station, recording_time),
+                db_record[4],
+                db_record[7],
+                hostname
+                + '/podcast/'
+                + station_alias
+                + '_'
+                + str(db_record[0]),
+                db_record[8],
+                podcast_img,
+                station,
+                db_record[6],
+                hostname)
+
+            feed.write(podcast_item)
+
+    feed.write('</channel>\n</rss>')
+
+    feed.close
+
+
 def main():
 
     with closing(MySQLdb.connect(
             login.DB_HOST, login.DB_USER,
             login.DB_PASSWORD, login.DB_DATABASE)) as connection:
 
-        station_alias = sys.argv[1]
-        hostname = get_baseurl(connection)
-
-        station = get_station_name(connection, station_alias)
-        last_build_date = formatdate(time.time(), True)
-        podcast_img = get_podcast_img(station_alias, hostname)
-        xml_file = PODCAST_PATH + station_alias + '.xml'
-
-        feed = open(xml_file, 'w')
-        podcast_header = create_podcast_header(
-                station, last_build_date, podcast_img,hostname)
-        feed.write(podcast_header)
-        feed.close
-
-        feed = open(xml_file, 'a')
-
-        with closing(connection.cursor()) as cursor:
-            cursor.execute(
-                    'SELECT * FROM aufnahmen WHERE sender=%s', (station,))
-            result = cursor.fetchall()
-            for db_record in result:
-
-                recording_time = datetime.datetime.fromtimestamp(db_record[5])
-
-                podcast_item = create_podcast_item(
-                                    '{0}, {1:%d.%m.%Y, %H:%M} Uhr'.format(
-                                    station, recording_time),
-                                    db_record[4],
-                                    db_record[7],
-                                    hostname
-                                    + '/podcast/'
-                                    + station_alias
-                                    + '_'
-                                    + str(db_record[0]),
-                                    db_record[8],
-                                    podcast_img,
-                                    station,
-                                    db_record[6],
-                                    hostname
-                                    )
-
-                feed.write(podcast_item)
-
-        feed.write('</channel>\n</rss>')
-
-        feed.close
+        argument = sys.argv[1]
+        
+        if argument == '':
+            with closing(connection.cursor()) as cursor:
+                cursor.execute(
+                    'SELECT alias FROM sender')
+                result = cursor.fetchall()
+                for db_record in result:
+                    build_podcastFile (connection, db_record[0])
+                    
+        else:
+            build_podcastFile (connection, argument)
+        
 
 
 if __name__ == '__main__':
