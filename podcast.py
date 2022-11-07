@@ -179,7 +179,7 @@ def create_podcast_item(title, audio_file, length_bytes, guid,
     return podcast_item
 
 
-def build_podcastFile (connection, station_alias)
+def build_podcastFile (connection, station_alias):
     hostname = get_baseurl(connection)
 
     station = get_station_name(connection, station_alias)
