@@ -35,11 +35,13 @@
                     <?php
                         include("include/db-connect.php");
                     
+                        $speichern = $_POST["speichern"];
                         $fqdn = $_POST["FQDN"];
                         $prot = $_POST["Protokoll"];
                         
-                        if ($fqdn != "") {
+                        if ($speichern == "save") {
                             setSettings($verbindung, $fqdn, $prot);
+                            exec("sudo /home/pi/radiobeere/podcast.py all");
                         }
 
                         $abfrage = "SELECT * FROM settings;";
@@ -50,7 +52,7 @@
                                     </label>\n";
                         }
                     ?>
-
+                    <input type="hidden" name="speichern" id="speichern" value="save" />
                     <input type="submit" value="Einstellungen speichern" form="verwalten_einstellungen" />
                 </form>
 
