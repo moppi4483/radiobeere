@@ -9,7 +9,7 @@ import time
 import login
 
 
-PATH_RECORDINGS = '/var/www/Aufnahmen'
+PATH_RECORDINGS = '/var/www/content/Aufnahmen'
 MUTE_ERRORS = '> /dev/null 2>&1'
 
 
@@ -75,9 +75,9 @@ def create_cron_entry(cursor, db_record):
                         + '/aufnahme_fertig_'
                         + db_record[3]
                         + '* ;',
-                '/home/pi/radiobeere/rb-rec-add.py',
+                '/radiobeere/rb-rec-add.py',
                 MUTE_ERRORS,
-                '; /home/pi/radiobeere/podcast.py',
+                '; /radiobeere/podcast.py',
                 db_record[3],
                 MUTE_ERRORS
                 ]
