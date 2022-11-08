@@ -50,7 +50,7 @@
             $ergebnis = mysqli_query($verbindung, $abfrage);
             while($row = mysqli_fetch_object($ergebnis))
                  {
-                $feed = "$prot://$hostname/podcast/$row->alias.xml";
+                $feed = "$prot://$hostname/content/podcast/$row->alias.xml";
                 echo "<b>$row->name:</b><br><a href=\"$feed\" target=\"_blank\">$feed</a><br><br>";
                 }
             ?>
