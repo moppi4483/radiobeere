@@ -53,7 +53,7 @@
                     $loesch = mysqli_query($verbindung, $loeschen);
                     }
                 unset($del);
-                exec("sudo /home/pi/radiobeere/rb-timer-update.py");
+                exec("sudo /radiobeere/rb-timer-update.py");
                 echo "<b><font color=\"#f00\">Sender gel&ouml;scht!</font></b><br><br>";
                 echo "<script type=\"text/javascript\">setTimeout(function(){location.reload(true);}, 3000);</script>";
                 }
@@ -90,10 +90,10 @@
                             {
                             if($size <  512000)
                                 {
-                                move_uploaded_file($_FILES['cover']['tmp_name'], "img/podcast/".$alias.".jpg");
+                                move_uploaded_file($_FILES['cover']['tmp_name'], "content/img/podcast/".$alias.".jpg");
                                 $eintrag = "INSERT INTO sender (alias, name, url) VALUES ('$alias', '$name', '$url')";
                                 $eintragen = mysqli_query($verbindung, $eintrag);
-                                exec("sudo /home/pi/radiobeere/podcast.py $alias");
+                                exec("sudo /radiobeere/podcast.py $alias");
                                 echo "<b><font color=\"#f00\">Sender gespeichert!</font></b><br><br>";
                                 }
                             else
@@ -113,7 +113,7 @@
                         {
                         $eintrag = "INSERT INTO sender (alias, name, url) VALUES ('$alias', '$name', '$url')";
                         $eintragen = mysqli_query($verbindung, $eintrag);
-                        exec("sudo /home/pi/radiobeere/podcast.py $alias");
+                        exec("sudo /radiobeere/podcast.py $alias");
                         echo "<b><font color=\"#f00\">Sender gespeichert!</font></b><br><br>";
                         }
                     }
