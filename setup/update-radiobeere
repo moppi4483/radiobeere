@@ -1,4 +1,4 @@
 #!/bin/bash
 
-cd /home/pi/radiobeere
+cd /radiobeere
 git pull > /var/www/radiobeere-update.log 2>&1
