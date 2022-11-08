@@ -13,8 +13,8 @@ import os
 import login
 
 
-PODCAST_IMG_PATH = '/var/www/img/podcast/'
-PODCAST_PATH = '/var/www/podcast/'
+PODCAST_IMG_PATH = '/var/www/content/img/podcast/'
+PODCAST_PATH = '/var/www/content/podcast/'
 
 
 def get_baseurl(connection):
@@ -234,7 +234,7 @@ def main():
 
         argument = sys.argv[1]
         
-        if argument == '':
+        if argument == 'all':
             with closing(connection.cursor()) as cursor:
                 cursor.execute(
                     'SELECT alias FROM sender')
