@@ -93,8 +93,8 @@
                     $alias = strtolower(preg_replace("/\s+/", "", $sender));
                     $alias = preg_replace("/[^0-9a-zA-Z \-\_]/", "", $alias);
                     $loesch = mysqli_query($verbindung, $loeschen);
-                    exec("sudo /home/pi/radiobeere/podcast.py $alias");
-                    exec("sudo /home/pi/radiobeere/rb-rec-cleanup.py");
+                    exec("sudo /radiobeere/podcast.py $alias");
+                    exec("sudo /radiobeere/rb-rec-cleanup.py");
                     }
                 unset($del);
                 //echo "<script type=\"text/javascript\">window.location.reload(true);</script>";
@@ -160,7 +160,7 @@
                     $jahr = (substr($row->datum,0,4));
                     $uhrzeit = (substr($row->uhrzeit,0,5));
                     echo "<b>$row->sender - $tag.$monat.$jahr - $uhrzeit Uhr ($row->laenge)</b><br>";
-                    echo "<a href=\"/Aufnahmen/$row->datei\" target=\"_blank\" class=\"ui-btn ui-icon-audio ui-btn-icon-left ui-btn-inline ui-corner-all ui-shadow\">Abspielen</a>";
+                    echo "<a href=\"/content/Aufnahmen/$row->datei\" target=\"_blank\" class=\"ui-btn ui-icon-audio ui-btn-icon-left ui-btn-inline ui-corner-all ui-shadow\">Abspielen</a>";
                     echo "<button data-icon=\"delete\" data-iconpos=\"left\" data-inline=\"true\" name=\"del[]\" value=\"$row->id\" id=\"$row->id\">L&ouml;schen</button>";
                     echo "<br><br>";
                     }
