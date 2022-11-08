@@ -41,7 +41,7 @@
                         
                         if ($speichern == "save") {
                             setSettings($verbindung, $fqdn, $prot);
-                            exec("sudo /home/pi/radiobeere/podcast.py all");
+                            exec("sudo /radiobeere/podcast.py all");
                         }
 
                         $abfrage = "SELECT * FROM settings;";
@@ -66,7 +66,7 @@
             if($_POST['update'] == "true")
                 {
                 echo "<p><strong>Die Software wird nun aktualisiert ...</strong></p>";
-                exec("sudo /home/pi/radiobeere/setup/update-radiobeere");
+                exec("sudo /radiobeere/setup/update-radiobeere");
                 $logfile = file("radiobeere-update.log");
                 foreach ($logfile AS $logfile_output)
                     {
@@ -76,7 +76,7 @@
                 unset($_POST);
                 }
 
-            $version_url = "https://raw.githubusercontent.com/Terminal-Geek/radiobeere/master/var/www/version.txt";
+            $version_url = "https://raw.githubusercontent.com/moppi4483/radiobeere/master/var/www/version.txt";
             $version_remote = file_get_contents($version_url);
             $version_file = fopen("version.txt","r");
             $version_local = fgets($version_file);
