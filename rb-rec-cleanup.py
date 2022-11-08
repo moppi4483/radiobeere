@@ -9,8 +9,8 @@ import os
 import login
 
 
-FILENAME_PATTERN = '/var/www/Aufnahmen/*.mp3'
-PATH_RECORDINGS = '/var/www/Aufnahmen/'
+FILENAME_PATTERN = '/var/www/content/Aufnahmen/*.mp3'
+PATH_RECORDINGS = '/var/www/content/Aufnahmen/'
 
 
 def delete_files_without_db_entry(cursor):
