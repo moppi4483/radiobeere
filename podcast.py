@@ -59,9 +59,9 @@ def get_podcast_img(station_alias, hostname):
 
     podcast_img = PODCAST_IMG_PATH + station_alias + '.jpg'
     if os.path.isfile(podcast_img) is False:
-        podcast_img = hostname + '/img/podcast/' + 'default.jpg'
+        podcast_img = hostname + '/content/img/podcast/' + 'default.jpg'
     else:
-        podcast_img = hostname + '/img/podcast/' + station_alias + '.jpg'
+        podcast_img = hostname + '/content/img/podcast/' + station_alias + '.jpg'
 
     return podcast_img
 
@@ -130,14 +130,14 @@ def create_podcast_item(title, audio_file, length_bytes, guid,
                     + '</title>',
                     '<link>'
                     + hostname
-                    + '/Aufnahmen/'
+                    + '/content/Aufnahmen/'
                     + audio_file
                     + '</link>',
                     '<description>Aufgenommen mit der RadioBeere.'
                     + '</description>',
                     '<enclosure url=\"'
                     + hostname
-                    + '/Aufnahmen/'
+                    + '/content/Aufnahmen/'
                     + audio_file
                     + '\" length=\"'
                     + str(length_bytes)
@@ -209,7 +209,7 @@ def build_podcastFile (connection, station_alias):
                 db_record[4],
                 db_record[7],
                 hostname
-                + '/podcast/'
+                + '/content/podcast/'
                 + station_alias
                 + '_'
                 + str(db_record[0]),
