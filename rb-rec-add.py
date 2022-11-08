@@ -15,9 +15,9 @@ from mutagen.id3 import ID3, TIT2, TPE1, TALB, APIC
 import login
 
 
-FILENAME_PATTERN = '/var/www/Aufnahmen/aufnahme_fertig_*.mp3'
+FILENAME_PATTERN = '/var/www/content/Aufnahmen/aufnahme_fertig_*.mp3'
 DATE_TIME_FORMAT = '%Y_%m_%d_%H_%M_%S'
-PODCAST_IMG_PATH = '/var/www/img/podcast/'
+PODCAST_IMG_PATH = '/var/www/content/img/podcast/'
 
 
 def audio_length(filename):
